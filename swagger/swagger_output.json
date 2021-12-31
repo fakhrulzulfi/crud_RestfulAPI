@@ -1,0 +1,93 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "REST API",
+    "description": ""
+  },
+  "host": "localhost:3000/api",
+  "basePath": "/",
+  "tags": [],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/post": {
+      "get": {
+        "tags": ["Post"],
+        "description": "Get All Post",
+        "parameters": [{
+          "name":"search",
+          "in":"query",
+          "description":"Search in title and content, Example : title, huruf, konten",
+          "type":"string"
+        }],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Post"],
+        "description": "Insert a new Post",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "ini adalah title 1"
+          },
+          {
+            "name": "content",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "is_published",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "example": {
+          "title" : "ini title",
+          "content": "ini content"
+        },
+        "responses": {}
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": ["User"],
+        "description": "Get All User",
+        "parameters": [],
+        "responses": {}
+      },
+      "post": {
+        "tags": ["User"],
+        "description": "Insert an User",
+        "parameters": [],
+        "responses": {}
+      }
+    }
+  },
+  "definitions": {}
+}
