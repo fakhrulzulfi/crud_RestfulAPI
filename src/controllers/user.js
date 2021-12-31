@@ -55,10 +55,12 @@ exports.getOne = async (req, res) => {
 
 exports.insert = async (req, res) => {
     try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
         const data = {
             id: nanoid(16), 
             name: req.body.name,
-            password: req.body.password,
+            password: hashedPassword,
         };
 
         const insertData = await user.create(data);
@@ -85,7 +87,12 @@ exports.insert = async (req, res) => {
 exports.change = async (req, res) => {
     try {
         const { userId } = req.params;
+
+        const { password } = req.body;
+        req.body.password = bcrypt.hash(password, 10);
+        
         const data = req.body;
+        
         if( !req.body.name || !req.body.password ) {
             return res.status(400).send({
                 status: 'failed',
