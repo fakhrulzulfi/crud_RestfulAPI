@@ -2,6 +2,8 @@ const user = require('../handlers/index').user;
 
 const { nanoid } = require('nanoid');
 
+const bcrypt = require('bcrypt');
+
 exports.getAll = async (req, res) => {
     try {
         const getAllData = await user.findAll();
@@ -68,7 +70,7 @@ exports.insert = async (req, res) => {
         if( insertData != null ) {
             return res.status(201).send({
                 status: 'success',
-                postID: user.id,
+                postID: data.id,
            });
         } else {
             return res.status(400).send({
