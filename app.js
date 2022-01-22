@@ -18,13 +18,11 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false })); // --> parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); //  --> parse application/json
 
-// --> UNTUK DROP dan MEMBUAT BARU DATABASE POSTS
-// db.sequelize.sync({ force: true }).then( () => {
-//     console.log('DROP and Re-Sync DB');
-// });
-
 // swagger
-app.use('/swagger/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+const options = {
+    customSiteTitle: 'RestAPI | Article'
+}
+app.use('/swagger/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile, options));
 
 app.use('/api', indexRouter);
 

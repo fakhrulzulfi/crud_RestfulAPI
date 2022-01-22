@@ -2,6 +2,7 @@ const handler = require('../handlers/index.js');
 
 const { nanoid } = require('nanoid');
 
+
 exports.getAll = async (req, res) => {
     try {
         const { search } = req.query;
@@ -53,19 +54,21 @@ exports.getOne = async (req, res) => {
 
 exports.insert = async (req, res) => {
     try {
-        if( !req.body.title || !req.body.content || !req.body.is_published || !req.body.user_id ) {
+        if( !req.body.title || !req.body.content || !req.body.is_published) {
             return res.status(400).send({
                 status: 'failed',
                 message: 'Content can\'t be empty!',
             });
         }
+        
+        const user_id = req.user_now.id;
 
         const data = {
             id: nanoid(16),
             title: req.body.title,
             content: req.body.content,
             is_published: req.body.is_published,
-            user_id: req.body.user_id
+            user_id: user_id
         };
 
         const insertData = await handler.post.create(data);
@@ -91,8 +94,12 @@ exports.insert = async (req, res) => {
 
 exports.change = async (req, res) => {
     try {
+        const user_id = req.user_now.id;
         const { postId } = req.params;
-        const data = req.body;
+        const data = {
+            ...req.body,
+            user_id
+        };
 
         const changeData = await handler.post.update(postId, data);
 

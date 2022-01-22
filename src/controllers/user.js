@@ -4,6 +4,9 @@ const { nanoid } = require('nanoid');
 
 const bcrypt = require('bcrypt');
 
+const {checkDuplicateUsername} = require('./auth');
+
+
 exports.getAll = async (req, res) => {
     try {
         const getAllData = await user.findAll();
@@ -32,7 +35,7 @@ exports.getAll = async (req, res) => {
 exports.getOne = async (req, res) => {
     try {
         const { userId } = req.params;
-        const getOneData = await user.findOne(userId);
+        const getOneData = await user.findByPk(userId);
 
         if( getOneData != null ) {
             return res.status(200).send({
@@ -57,12 +60,22 @@ exports.getOne = async (req, res) => {
 
 exports.insert = async (req, res) => {
     try {
+        const checkUsername = await checkDuplicateUsername(req.body.name);
+        
+        if( checkUsername ) {
+            return res.status(400).send({
+                status: 'failed',
+                message: 'Username telah digunakan!'
+            });
+        }
+
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
         const data = {
             id: nanoid(16), 
             name: req.body.name,
             password: hashedPassword,
+            role: 'member'
         };
 
         const insertData = await user.create(data);
@@ -91,7 +104,7 @@ exports.change = async (req, res) => {
         const { userId } = req.params;
 
         const { password } = req.body;
-        req.body.password = bcrypt.hash(password, 10);
+        req.body.password = await bcrypt.hash(password, 10);
         
         const data = req.body;
         
@@ -121,7 +134,6 @@ exports.change = async (req, res) => {
             message: error.message || 'Internal Server Error'
         });
     }
-
 };
 
 exports.remove = async (req, res) => {

@@ -14,12 +14,12 @@ exports.findAll = async (search) => {
 
     return await Post.findAll({
         where: condition,
-        // attributes: ['title', 'content'],
         include: [{
             model: User,
             as: 'user',
-            // attributes: ['name']
+            attributes: ['name']
         }],
+        attributes: ['id', 'title', 'content', 'is_published', 'createdAt', 'updatedAt']
     });
 };
 

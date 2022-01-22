@@ -5,8 +5,12 @@ exports.findAll = async () => {
     return users = await User.findAll();
 };
 
-exports.findOne = async (userId) => {
+exports.findByPk = async (userId) => {
     return await User.findByPk(userId);
+};
+
+exports.findOne = async (data) => {
+    return await User.findOne(data);
 };
 
 exports.create = async (data) => {
@@ -20,3 +24,7 @@ exports.update = async (userId, data) => {
 exports.delete = async (userId) => {
     return await User.destroy({ where: { id: userId } });
 };
+
+exports.searchUserByUsername = async (username) => {
+    return await User.findOne({ where: { name: username } });
+}

@@ -1,93 +1,485 @@
 {
   "swagger": "2.0",
+  "openapi": "Enable",
   "info": {
-    "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
+    "title": "RestfulAPI Artikel",
+    "description": "<b>RestfulAPI Artikel Sederhana</b> \n\n Teknologi yang digunakan : \n1. NodeJS\n2. ExpressJS\n3. MySQL\n4. ORM Sequelize\n5. SwaggerUI \n\nGithub : https://github.com/fakhrulzulfi",
+    "version": "1.0.0"
   },
   "host": "localhost:3000/api",
-  "basePath": "/",
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
   "tags": [],
-  "schemes": [
-    "http"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
   "paths": {
     "/post": {
       "get": {
-        "tags": ["Post"],
-        "description": "Get All Post",
-        "parameters": [{
-          "name":"search",
-          "in":"query",
-          "description":"Search in title and content, Example : title, huruf, konten",
-          "type":"string"
-        }],
+        "tags": ["Article"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "example": "Bearer eyJhbGciOiJ..."
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Successful operation"
+            "description": "OK"
           },
-          "404": {
-            "description": "Not found"
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
       "post": {
-        "tags": ["Post"],
-        "description": "Insert a new Post",
+        "tags": ["Article"],
+        "description": "Endpoint for Insert a new Article",
         "parameters": [
           {
-            "name": "title",
-            "in": "body",
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
             "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "ini adalah title 1"
+            "example": "Bearer eyJhbGciOiJ..."
           },
           {
-            "name": "content",
+            "name": "body",
             "in": "body",
-            "required": true,
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "is_published",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "boolean"
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "ini adalah judul kontennya"
+                },
+                "content": {
+                  "type": "string",
+                  "example": "ini adalah isi kontennya"
+                },
+                "is_published": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
             }
           }
         ],
-        "example": {
-          "title" : "ini title",
-          "content": "ini content"
-        },
-        "responses": {}
+        "responses": {
+          "201": {
+            "description": "Article successfully created"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/post/{postId}": {
+      "get": {
+        "tags": ["Article"],
+        "description": "Endpoint for get an article",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "example": "Bearer eyJhbGciOiJ..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Article"],
+        "description": "Endpoint for update an article",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "example": "Bearer eyJhbGciOiJ..."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "judul konten yang diupdate"
+                },
+                "content": {
+                  "type": "string",
+                  "example": "isi konten yang ingin diupdate"
+                },
+                "is_published": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Article"],
+        "description": "Endpoint for delete an article",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "example": "Bearer eyJhbGciOiJ..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
     "/user": {
       "get": {
         "tags": ["User"],
-        "description": "Get All User",
-        "parameters": [],
-        "responses": {}
+        "description": "Endpoint for get All User (Admin Only)",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "example": "Bearer eyJhbGciOiJ..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       },
       "post": {
         "tags": ["User"],
-        "description": "Insert an User",
-        "parameters": [],
-        "responses": {}
+        "description": "Endpoint for Insert a new user or Register user",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "example": "Bearer eyJhbGciOiJ..."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Fakhrul_zulfi"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "iniPasswordKuatBanget1"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/user/{userId}": {
+      "get": {
+        "tags": ["User"],
+        "description": "Endpoint for get an user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "example": "Bearer eyJhbGciOiJ..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["User"],
+        "description": "Endpoint for update an user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "example": "Bearer eyJhbGciOiJ..."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Fakhrul_zulfi"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "GantiPassword1YangKuatNih"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User"],
+        "description": "Endpoint for delete an user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "example": "Bearer eyJhbGciOiJ..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "Endpoint for Login",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Login and get Token",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "Fakhrulzulfi"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "iniPasswordAKuBanget"
+                }
+              },
+              "required": ["username", "password"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Wrong Password"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/rtoken": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "Endpoint for Generate a new Token",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "authorization": {
+                  "type": "string",
+                  "example": "eyJ0eXAiOAAOI..."
+                }
+              },
+              "required": ["authorization"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     }
   },
-  "definitions": {}
+  "components": {
+    "schemas": {
+      "Login": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "example": "Zoel"
+              }
+            }
+          },
+          "password": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "example": "Password dong"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "examples": {
+    "Login": {
+      "summary": "Sample for Login",
+      "value": {
+        "username": "Fakhrul Zulfi",
+        "password": "iniSecureBangetLoh"
+      }
+    }
+  }
 }
