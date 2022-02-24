@@ -222,47 +222,6 @@
             "description": "Internal Server Error"
           }
         }
-      },
-      "post": {
-        "tags": ["User"],
-        "description": "Endpoint for Insert a new user or Register user",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string",
-            "required": true,
-            "example": "Bearer eyJhbGciOiJ..."
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "Fakhrul_zulfi"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "iniPasswordKuatBanget1"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "OK"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
       }
     },
     "/user/{userId}": {
@@ -444,41 +403,41 @@
           }
         }
       }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Login": {
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "object",
-            "properties": {
-              "type": {
-                "type": "string",
-                "example": "Zoel"
-              }
-            }
-          },
-          "password": {
-            "type": "object",
-            "properties": {
-              "type": {
-                "type": "string",
-                "example": "Password dong"
+    },
+    "/register": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "Endpoint for Insert a new user or Register user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "zulfi"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "passWordZoel"
+                }
               }
             }
           }
+        ],
+        "responses": {
+          "201": {
+            "description": "User Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
-      }
-    }
-  },
-  "examples": {
-    "Login": {
-      "summary": "Sample for Login",
-      "value": {
-        "username": "Fakhrul Zulfi",
-        "password": "iniSecureBangetLoh"
       }
     }
   }

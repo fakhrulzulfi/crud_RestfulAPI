@@ -28,5 +28,6 @@ router.delete('/user/:userId', checkToken, user.remove);
 
 router.post('/login', authentication.login);
 router.post('/rtoken', authentication.getNewToken);
+router.post('/register', user.insert);
 
 module.exports = router;
